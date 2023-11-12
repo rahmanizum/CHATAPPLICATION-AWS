@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Add this CSS to style the scrollbar */
+    .overflow-y-scroll {
+        scrollbar-width: thin;
+        /* "auto" can also be used for browser default */
+        scrollbar-color: #aaa #fff;
+        /* Change the colors to your preference */
+    }
+
+    .overflow-y-scroll::-webkit-scrollbar {
+        width: 6px;
+        /* Adjust the width as needed */
+    }
+
+    .overflow-y-scroll::-webkit-scrollbar-thumb {
+        background: #aaa;
+        /* Change the color to your preference */
+    }
+
+    .overflow-y-scroll::-webkit-scrollbar-thumb:hover {
+        background: #666;
+        /* Change the color on hover if desired */
+    }
+
+    .chat-class{
+        max-width: 90%;
+        background-color: rgb(130, 247, 247);
+    }
+    .self-chat-class{
+        max-width: 90%;
+        background-color: rgb(186, 201, 201); 
+    }
+    .chat-image{
+        height: 10rem;
+        width: 14rem;
+        object-fit: cover;
+    }

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Main Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+    <!--Navigation Bar-->
+    <nav class="nav navbar navbar-expand-lg text-bg-warning col-12">
+        <div class="container text-black p-1 ">
+            <a class="navbar-brand" href="#"><img src="/images/logo.png" alt="brand-image"
+                    class=" img-fluid rounded-circle" width="50px" height="50px"></a>
+            <h2><span class="fw-bold fst-italic text-success">Happy Chat</span></h2>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navmenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link fs-4" data-bs-toggle="modal" data-bs-target="#profile_modal"
+                        aria-expanded="true" aria-controls="profile_modal">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link fs-4">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/" class="nav-link fs-4" id="logoutbtn">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+    <!--Main Contents-->
+    <section class="row w-100 h-100 d-none d-lg-flex text-bg-danger bg-opacity-25">
+        <div class="col-3  pe-0" style="min-height: 85vh;">
+            <div class="m-3 rounded-3">
+                <div class="btn btn-light form-control bg-dark text-white " data-bs-toggle="modal"
+                    data-bs-target="#create_group_model" aria-controls="create_group_model" id="create_groupBtn"> Create
+                    new
+                    group
+                </div>
+            </div>
+            <div class="list-group overflow-y-scroll" style="height: 80vh;" id="group_body">
+            </div>
+
+        </div>
+        <div class="col-9 position-relative pe-1" style="min-height: 80vh;">
+            <div class="container mt-3 p-0" id="group_headContainer">
+                <div
+                    class="w-100 d-flex align-items-center justify-content-between border border-opacity-10 p-2 mb-2 rounded-2 bg-white text-black">
+                    <img src="https://picsum.photos/seed/common/200" alt="Profile Picture" class="rounded-circle"
+                        style="width: 50px; height: 50px;" id="group_img">
+                    <h3><strong class="mb-1" id="group_heading">Common Group</strong></h3>
+                    <small id="group_members" data-toggle="tooltip" data-bs-placement="left" title="All Members can access this group !" >All Members</small>
+                    <input type="submit" class="btn btn-primary  d-none" data-bs-toggle="modal"
+                    data-bs-target="#create_group_model"  value=&#9998; id="0">
+                </div>
+                <div class="card overflow-y-scroll rounded-5 " style="height: 67vh;" id="chat_container">
+                    <div class="card-body flex-grow-0 container row pe-0" id="chat_body">
+                    </div>
+                </div>
+            </div>
+            <div class=" fixed-bottom mb-5 mb-lg-1" style="position: absolute; bottom:0 ; width: 100%;">
+                <div class="container mt-4 mb-3 text-black">
+                    <form id="message_form">
+                        <div class="input-group align-items-center">
+                            <div class="form-check form-switch me-2 ">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitch">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">text</label>
+                              </div>
+                            <input type="text" class="form-control rounded-start-2" placeholder="Type your message..." name="Message"
+                               id="flexInput" required>
+                            <input type="submit" class="btn btn-primary"  value=&#10148; id="0">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class=" container-fluid text-center d-flex align-items-center justify-content-center d-lg-none d-flex" style="min-height:73vh ;">
+        <h5>
+            Work best with big screen , Use laptop or pc
+        </h5>
+      </section>
+    <!--Models-->
+    <!--Create or Update group -->
+    <div class="modal fade " data-bs-backdrop="static" data-bs-keyboard="false" id="create_group_model">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-center">
+                    <h1 class="modal-title fs-5" id="model_heading">Create new group </h1>
+                </div>
+                <div class="modal-body">
+                    <form id="create_group_form">
+                        <div class="mb3">
+                            <label for="members" class="col-form-label" >Group Name:</label>
+                            <input type="text" class="form-control" placeholder="Eg:Family Group etc" name="group_name" id="group_name"
+                                required>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="members" class="col-form-label">Group Members:</label>
+                            <input type="text" class="form-control" name="search_bar" placeholder="Search..." id="search_bar">
+
+                            <div class="card mt-2 d-none">
+                                <ul class="list-group overflow-y-scroll" id="user_list" style="max-height: 30vh;">
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="group-description" class="col-form-label">Group description:</label>
+                            <textarea class="form-control" name="group_description" id="group_description" >You can leave this column</textarea>
+                        </div>
+                        <input type="hidden" class="form-control" name="edit_status" value="false">
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal_closeBtn">Close</button>
+                    <button type="button" class="btn btn-primary" id="model_submibtn">Create Group</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--Profile Model-->
+    <div class="modal  fade " id="profile_modal">
+        <div class="modal-dialog modal-dialog-centered ">
+          <div class="modal-content">
+            <div class="modal-body p-1">
+              <div class="card text-bg-dark ">
+                <div class="card-header text-center">
+                  <img src="http://randomuser.me/api/portraits/men/11.jpg" class="rounded-circle mb-3" alt="profile_image" id="profile_image">
+                  <h2 id="profile_name" class="fw-bold">Jacob</h2>
+                  <h5 id="profile_email" >jacob@gmail.com</h5>
+                  <h5 id="profile_number" >9895666410</h5>
+                </div>
+                <div class="card-body">
+                  <div class="list-group">
+                    <a class="list-group-item list-group-item-action active" data-bs-toggle="list"><i class="fas fa-user me-2"></i>Account Details</a>
+                    <a class="list-group-item list-group-item-action" data-bs-toggle="list"><i class="fas fa-comments me-2"></i>Chats</a>
+                    <a class="list-group-item list-group-item-action" data-bs-toggle="list"><i class="fas fa-bell me-2"></i>Notification</a>
+                    <a class="list-group-item list-group-item-action" data-bs-toggle="list"><i class="fas fa-question-circle me-2"></i>Help</a>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <footer class="bg-warning bg-opacity-100 py-4 text-black">
+        <div class="container text-center">
+            <p>&copy; 2023 Mufil PvtLtd. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+<script src="js/main/main.js"></script>
+
+</html>
