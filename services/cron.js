@@ -14,7 +14,6 @@ exports.job = new CronJob(
 
 async function archiveOldRecords() {
     try {
-        console.log("deleting started");
       const tenDaysAgo = new Date();
       tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
       // Find records to archive
@@ -25,7 +24,6 @@ async function archiveOldRecords() {
           },
         },
       });
-      console.log(recordsToArchive);
   
       // Archive records
       await Promise.all(
@@ -41,7 +39,6 @@ async function archiveOldRecords() {
           await record.destroy();
         })
       );
-  
       console.log('Old records archived successfully.');
     } catch (error) {
       console.error('Error archiving old records:', error);
@@ -50,7 +47,6 @@ async function archiveOldRecords() {
 
 // async function archiveOldRecords() {
 //     try {
-//       console.log("deleting started");
   
 //       const fiveMinutesAgo = new Date();
 //       fiveMinutesAgo.setMinutes(fiveMinutesAgo.getMinutes() - 5);
@@ -68,6 +64,7 @@ async function archiveOldRecords() {
 //           await ArchivedChat.create({
 //             id: record.id,
 //             message: record.message,
+//             isImage:record.isImage, 
 //             date_time: record.date_time,
 //             UserId: record.UserId,
 //             GroupId: record.GroupId
@@ -75,8 +72,6 @@ async function archiveOldRecords() {
 //           await record.destroy();
 //         })
 //       );
-  
-//       console.log('Old records archived successfully.');
 //     } catch (error) {
 //       console.error('Error archiving old records:', error);
 //     }

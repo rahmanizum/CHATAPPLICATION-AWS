@@ -41,7 +41,6 @@ async function on_Signup(e) {
     } catch (error) {
         if (error.response && error.response.status === 409) {
             e.preventDefault();
-            console.log("Authentication failed. User is already exist.");
             helperFunctions.alertFunction(signupElements.alert1);
         } else {
             alert("Something went wrong - signup agin")

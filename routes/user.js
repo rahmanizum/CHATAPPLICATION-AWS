@@ -2,17 +2,19 @@ const express = require('express');
 const userControler = require('../controllers/user')
 const passwordController = require('../controllers/password')
 const mainPagecontroler = require('../controllers/mainPage')
-const authController = require('../authentication/user')
+const authController = require('../middleware/authentication')
+const multerMiddleware = require('../middleware/multer')
+const upload = multerMiddleware.multer.single('image');
 const router = express.Router();
-const multer = require('multer');
-const upload = multer({ storage: multer.memoryStorage() });
+
 router.post('/signup',userControler.userSignup);
 router.post('/signin',userControler.userSignin);
 router.post('/forgotpassword',passwordController.userResetpasswordMail)
 router.get('/reset/:forgotId', passwordController.userResetpasswordform)
 router.post('/password-reset',passwordController.userResetpassword)
+
 router.post('/post-message',authController.authorization,userControler.saveChatHistory)
-router.post('/post-image',authController.authorization,upload.single('image'),userControler.saveChatImages)
+router.post('/post-image',authController.authorization,upload,userControler.saveChatImages)
 router.get('/get-message',authController.authorization,userControler.getUserChatHistory);
 router.get('/get-users',authController.authorization,userControler.getAlluser)
 router.get('/get-user',authController.authorization,userControler.getcurrentuser)

@@ -1,25 +1,19 @@
-$(document).ready(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-});
 
 const socket = io(window.location.origin);
-socket.on('connect', () => {
-    console.log(`You are connected with id : ${socket.id}`);
-})
 socket.on('common-message', () => {
-    if (elements.message_btn.id == 0) {
+    if (formElements.message_btn.id == 0) {
         ShowCommonChats();
     }
 
 })
 socket.on('group-message', (groupId) => {
-    if (elements.message_btn.id == groupId) {
+    if (formElements.message_btn.id == groupId) {
         showGroupChats(groupId)
     }
 })
 
 
-const elements = {
+const formElements = {
     messageInput: message_form.querySelector('input[name="Message"]'),
     message_btn: message_form.querySelector('input[type="submit"]'),
     flexSwitch:message_form.querySelector('#flexSwitch'),
@@ -27,10 +21,10 @@ const elements = {
     flexInput:message_form.querySelector('#flexInput')
 }
 const modelElements = {
-    groupName: create_group_model.querySelector('input[name="group_name"]'),
-    searchBar: create_group_model.querySelector('input[name="search_bar"]'),
-    groupDesription: create_group_model.querySelector('textarea[name="group_description"]'),
-    editStatus: create_group_model.querySelector('input[name="edit_status"]')
+    groupName: group_model.querySelector('input[name="group_name"]'),
+    searchBar: group_model.querySelector('input[name="search_bar"]'),
+    groupDesription: group_model.querySelector('textarea[name="group_description"]'),
+    editStatus: group_model.querySelector('input[name="edit_status"]')
 }
 const profileModel = {
     name:profile_modal.querySelector('#profile_name'),
@@ -40,20 +34,21 @@ const profileModel = {
     
 }
 
-elements.flexSwitch.addEventListener('change',()=>{
-    if(elements.flexLabel.innerText === "text"){
-        elements.flexLabel.innerText = "image";
-        elements.flexInput.setAttribute('accept','image/*');
-        elements.flexInput.type="file"
+const group_editbtn = group_headContainer.querySelector('input[type="submit"]');
+
+formElements.flexSwitch.addEventListener('change',()=>{
+    if(formElements.flexLabel.innerText === "text"){
+        formElements.flexLabel.innerText = "image";
+        formElements.flexInput.setAttribute('accept','image/*');
+        formElements.flexInput.type="file"
     }else{
-        elements.flexLabel.innerText = "text"
-        elements.flexInput.removeAttribute('accept');
-        elements.flexInput.type="text"
+        formElements.flexLabel.innerText = "text"
+        formElements.flexInput.removeAttribute('accept');
+        formElements.flexInput.type="text"
     }
 })
 
-const group_editbtn = group_headContainer.querySelector('input[type="submit"]');
-elements.message_btn.addEventListener('click', on_SendMessage);
+formElements.message_btn.addEventListener('click', on_SendMessage);
 create_groupBtn.addEventListener('click', showingAllUser)
 group_editbtn.addEventListener('click', showingGroupDetails)
 modelElements.searchBar.addEventListener('keyup', searchUser);
@@ -179,14 +174,14 @@ async function on_SendMessage(e) {
         if (e.target && message_form.checkValidity()) {
             e.preventDefault();
             const groupId = e.target.id;
-            if(elements.flexLabel.innerText === "text"){
+            if(formElements.flexLabel.innerText === "text"){
                 const data = {
-                    message: elements.messageInput.value,
+                    message: formElements.messageInput.value,
                     GroupId: groupId
                 }
                 await axios.post('user/post-message', data);
             }else{
-                const file = elements.messageInput.files[0]
+                const file = formElements.messageInput.files[0]
                 if (file && file.type.startsWith('image/')){
                     const formData = new FormData();
                     formData.append('image', file);
@@ -219,7 +214,7 @@ async function ShowCommonChats() {
     try {
         let savingChats
         const chats = localStorage.getItem('chatHistory');
-        if (chats) {
+        if (chats && chats.length!=2) {
             const parsedChatHistory = JSON.parse(chats);
             const lastMessageId = parsedChatHistory[parsedChatHistory.length - 1].messageId;
             const APIresponse = await axios(`user/get-messages?lastMessageId=${lastMessageId}`);
@@ -361,7 +356,7 @@ async function createGroup(e) {
 
             }
             create_group_form.reset();
-            $('#create_group_model').modal('hide');
+            $('#group_model').modal('hide');
             ShowGroup();
         } else {
             alert('fill all details ')
@@ -405,7 +400,7 @@ async function setupGroup(groupId, userId) {
             group_heading.innerHTML = `Common Group`;
             group_members.innerHTML = ` All Members`;
             group_members.setAttribute("data-bs-original-title", `All Members can access this group !`);
-            elements.message_btn.id = groupId;
+            formElements.message_btn.id = groupId;
             group_editbtn.classList.add('d-none')
 
         } else {
@@ -418,7 +413,7 @@ async function setupGroup(groupId, userId) {
             const { users } = memberApi.data;
             const usersString = users.map(item => item.name.trim()).join(',');
             group_members.setAttribute("data-bs-original-title", `${usersString}`);
-            elements.message_btn.id = groupId
+            formElements.message_btn.id = groupId
             if (group.AdminId == userId) {
                 group_editbtn.id = groupId;
                 group_editbtn.classList.remove('d-none')
@@ -449,4 +444,9 @@ async function setupProfile() {
 ShowGroup();
 ShowCommonChats();
 setupProfile();
+
+
+$(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+});
 

@@ -146,6 +146,26 @@ exports.getAlluser = async (request, response, next) => {
     }
 }
 
+exports.createGroup = async (request, response, next) => {
+    try {
+        const user = request.user;
+        const { name, membersNo, membersIds } = request.body;
+        const group = await user.createGroup({
+            name,
+            membersNo,
+            AdminId: user.id
+        })
+        membersIds.push(user.id);
+        await group.addUsers(membersIds.map((ele) => {
+            return Number(ele)
+        }));
+        return response.status(200).json({ group, message: "Group is succesfylly created" })
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ message: 'Internal Server error!' })
+    }
+}
 exports.updateGroup = async (request, response, next) => {
     try {
         const user = request.user;
@@ -163,26 +183,6 @@ exports.updateGroup = async (request, response, next) => {
             return Number(ele)
         }));
         return response.status(200).json({ updatedGroup, message: "Group is succesfylly updated" })
-
-    } catch (error) {
-        console.log(error);
-        return response.status(500).json({ message: 'Internal Server error!' })
-    }
-}
-exports.createGroup = async (request, response, next) => {
-    try {
-        const user = request.user;
-        const { name, membersNo, membersIds } = request.body;
-        const group = await user.createGroup({
-            name,
-            membersNo,
-            AdminId: user.id
-        })
-        membersIds.push(user.id);
-        await group.addUsers(membersIds.map((ele) => {
-            return Number(ele)
-        }));
-        return response.status(200).json({ group, message: "Group is succesfylly created" })
 
     } catch (error) {
         console.log(error);
@@ -284,7 +284,6 @@ exports.saveChatImages = async (request, response, next) => {
         const { GroupId } = request.body;
         const filename = `chat-images/group${GroupId}/user${user.id}/${Date.now()}_${image.originalname}`;
         const imageUrl = await awsService.uploadToS3(image.buffer, filename)
-        console.log(imageUrl);
         if (GroupId == 0) {
             await user.createChatHistory({
                 message: imageUrl,

@@ -1,8 +1,6 @@
 import helperFunctions from "/js/password/helperFunctions.mjs";
 const parts = window.location.href.split('/'); 
 const lastPart = parts[parts.length - 1];
-
-console.log(lastPart);
 submitBtn.addEventListener('click',onReset)
 async function onReset(e) {
     try {

@@ -1,11 +1,12 @@
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const { instrument } = require('@socket.io/admin-ui');
-
 const express = require('express');
-require('dotenv').config();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
+const fs = require('fs')
+require('dotenv').config();
 
 const sequelize = require('./util/database');
 const User = require('./models/users');
@@ -21,7 +22,10 @@ cronService.job.start();
 const maninRoute = require('./routes/home');
 const userRoute = require('./routes/user');
 
+const accessLogStream = fs.createWriteStream('./access.log', { flags: 'a' });
+
 const app = express();
+app.use(morgan('combined', { stream: accessLogStream }));
 app.use(cors({
   origin: '*',
   methods:['GET','POST'],
@@ -56,7 +60,7 @@ Groups.belongsTo(User,{foreignKey: 'AdminId',constraints:true,onDelete:'CASCADE'
 Groups.hasMany(ChatHistory);
 ChatHistory.belongsTo(Groups);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 async function initiate() {
     try {
      const res = await sequelize.sync();
@@ -64,7 +68,8 @@ async function initiate() {
         console.log(`Server is running on port ${PORT} `);
       })
     } catch (err) {
-      console.log(err);
+      console.error('Error during server initialization:', err);
+      process.exit(1); 
     }
   }
   initiate();

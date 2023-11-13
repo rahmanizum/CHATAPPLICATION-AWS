@@ -13,7 +13,6 @@ const s3Client = new S3Client({
 
 exports.uploadToS3 = async (image, filename) => {
     try {
-      console.log("started");
         const uploadParams = {
             Bucket: bucketName,
             Key: filename,
