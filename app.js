@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const fs = require('fs')
 require('dotenv').config();
 
+// Importing the routes for our API
 const sequelize = require('./util/database');
 const User = require('./models/users');
 const Forgotpasswords = require('./models/forgot-password');
