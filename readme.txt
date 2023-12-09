@@ -1,0 +1,23 @@
+
+
+FIND SAMPLE FORMAT OF ENV FILE HERE 
+
+
+SECRET_KEY='yourSecretKey'
+RAZORPAY_KEY_ID='rzp_test_8wMb3edc7cb'
+RAZORPAY_KEY_SECRET='Hvesd0TxLSfVlhB4iEdAG'
+PORT='3000'
+SIB_API_KEY = 'xkeysib-31219b609d9d576e542a608935-IbZSPu54CPOfVA7v
+
+AWS_ACCESS_KEY_ID='AKIA5TZMI7FK'
+AWS_SECRET_ACCESS_KEY='ubjxpedpC4ggSIi2ki5N'
+BUCKET_NAME = 'groupchatapp-demo'
+
+
+WEBSITE = http://15.207.14.149:3000
+DATABASE_NAME='groupchat-app'
+DATABASE_USERNAME='mufilrahman'
+DATABASE_PASSWORD='Mufilpassword'
+DATABASE_DIALECT='mysql'
+DATABASE_HOST='database-1.cqa0oth-1.rds.amazonaws.com'
+
