@@ -4,8 +4,6 @@ const { instrument } = require('@socket.io/admin-ui');
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const morgan = require('morgan');
-const fs = require('fs')
 require('dotenv').config();
 
 // Importing the routes for our API
@@ -22,11 +20,7 @@ cronService.job.start();
 
 const maninRoute = require('./routes/home');
 const userRoute = require('./routes/user');
-
-const accessLogStream = fs.createWriteStream('./access.log', { flags: 'a' });
-
 const app = express();
-app.use(morgan('combined', { stream: accessLogStream }));
 app.use(cors({
   origin: '*',
   methods:['GET','POST'],
