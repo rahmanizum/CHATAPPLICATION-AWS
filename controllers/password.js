@@ -31,31 +31,36 @@ exports.userResetpasswordMail = async (request, response, next) => {
             const mailresponse = await tranEmailApi.sendTransacEmail({
                 sender,
                 to: receivers,
-                subject: "Reset Your Password",
+                subject: "Chat Application password assistance",
                 htmlContent: `
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>Password Reset</title>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h1 class="text-center">Reset Your Password</h1>
-                                            <p class="text-center">Click the button below to reset your admin account password:</p>
-                                            <div class="text-center">
-                                                <a href="${process.env.WEBSITE}/user/reset/{{params.role}}" class="btn btn-primary">Reset Password</a>
-                                            </div>
-                                        </div>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1 class="text-center">Reset Your Password</h1>
+                                    <p class="text-center">Follow this link to reset your account password at Chat Application.If you didnt request a new password, you can safetely delete this email.</p>
+                                    <div class="text-center">
+                                        <a href="${process.env.WEBSITE}/user/reset/{{params.role}}" class="btn btn-primary">Reset Password</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <hr>
+                                        <p>If you have any questions, contact us at <a href="mailto:mufilrahman.a@gmail.com">mufilrahman.a@gmail.com</a></p>
+                
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </body>
-                    </html>`,
+                    </div>
+                </div>
+                </body>
+                </html>`,
                 params: {
                     role: id
                 }
